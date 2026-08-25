@@ -1,0 +1,52 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "1.0.0",
+	"FriendlyName": "SumeruAI ATF",
+	"Description": "Unity-compatible Audio-to-Face: login + offline-mesh protobuf, MetaHuman Face Sync (RigLogic curves), optional LiveLink AnimGraph nodes. Does not include Avatar or TalkStream.",
+	"Category": "Animation",
+	"CreatedBy": "SumeruAI",
+	"CreatedByURL": "https://www.sumeruai.us/",
+	"DocsURL": "https://www.sumeruai.us/",
+	"MarketplaceURL": "",
+	"FabURL": "",
+	"SupportURL": "https://www.sumeruai.us/",
+	"EngineVersion": "5.3.0",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "LiveLink",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "SumeruAICore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SumeruAIATF",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SumeruAIATFEditor",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SumeruIKRuntime",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "SumeruIKEditor",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default"
+		}
+	]
+}
