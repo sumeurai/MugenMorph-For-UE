@@ -10,10 +10,11 @@
 class UATFApiClient;
 class USkeletalMeshComponent;
 class UATFComponent;
+class FATFAudioRecord;
 
 /**
  * Sample-only actor (not a public SDK header).
- * Login, overlay UI, PlayFromAudio. Mirrors Unity AudioToFaceSample.
+ * Login, overlay UI, PlayFromAudio, mic record. Mirrors Unity AudioToFaceSample.
  */
 UCLASS(Blueprintable, meta = (DisplayName = "Sumeru ATF API Sample"))
 class SUMERUAIATF_API AATFApiSampleActor : public AActor
@@ -22,6 +23,7 @@ class SUMERUAIATF_API AATFApiSampleActor : public AActor
 
 public:
 	AATFApiSampleActor();
+	virtual ~AATFApiSampleActor() override;
 
 protected:
 	virtual void BeginPlay() override;
@@ -31,9 +33,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ATF|API")
 	TObjectPtr<UATFApiClient> Client;
 
-	/** Absolute path, or relative to the project directory. */
+	/** Last WAV chosen via Browse (J). Empty until a file is selected. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
-	FString WavFilePath = TEXT("Plugins/SumeruAI/Content/Sample/AudioToFace/Audio/silence_16k.wav");
+	FString WavFilePath;
 
 	/** start / middle / end — only used for legacy mesh JSON transport. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
@@ -41,9 +43,6 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
 	bool bLoginOnBeginPlay = true;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
-	bool bRequestOnBeginPlay = false;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
 	bool bShowOverlay = true;
@@ -55,6 +54,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
 	int32 FaceId = 0;
 
+	/** Unity AudioRecord maxLengthSeconds (default 300). */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF|Sample")
+	int32 MaxRecordSeconds = 300;
+
 	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
 	bool RequestFromWavFile();
 
@@ -62,13 +65,21 @@ public:
 	bool RequestFromWavFilePath(const FString& AbsoluteOrRelativePath);
 
 	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
-	bool PlayFromAudioFile();
-
-	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
 	bool BrowseAndPlayWav();
 
 	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
 	void InterruptPlayback();
+
+	/** Unity AudioToFaceSample.StartRecord. */
+	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
+	void StartRecord();
+
+	/** Unity AudioToFaceSample.StopRecord: encode 16 kHz WAV then PlayFromAudio. */
+	UFUNCTION(BlueprintCallable, Category = "ATF|Sample")
+	void StopRecord();
+
+	UFUNCTION(BlueprintPure, Category = "ATF|Sample")
+	bool IsRecording() const;
 
 private:
 	UFUNCTION()
@@ -88,9 +99,10 @@ private:
 	void SetStatus(const FString& Message);
 	bool HasCredentials() const;
 	UATFComponent* EnsureFaceComponent() const;
-	void InputPlayWav();
 	void InputBrowseWav();
 	void InputInterrupt();
+	void InputToggleRecord();
 
 	FString StatusMessage;
+	FATFAudioRecord* Recorder = nullptr;
 };

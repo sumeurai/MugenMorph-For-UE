@@ -52,8 +52,9 @@ Menu: SumeruAI -> Create ATF Demo Level  (saves ATF_Demo)
 1. Fill Access Key / Secret Key (empty keys: overlay warns, PIE does not crash).
 2. Import a MetaHuman, select it, SumeruAI -> Setup ATF on Selected Actor.
    Setup wires the sample actor FaceMesh when one is in the level.
-3. PIE overlay: Play WAV / Browse / Interrupt. Keys: P / J / I.
-   Placeholder wav: Content/Sample/AudioToFace/Audio/silence_16k.wav
+3. PIE overlay: Browse / Start Record / Stop Record / Interrupt.
+   Keys: J / R / I (same as Unity: pick a WAV, or record then PlayFromAudio).
+   Record uses the default microphone, encodes 16 kHz mono PCM WAV, then PlayFromAudio.
 
 The client logs in if needed, POSTs the wav, then feeds PCM + 61-float frames
 into AAudioToFaceManager via EnqueueExternalSpeech.
@@ -66,6 +67,7 @@ Blueprint (Unity PlayFromAudio equivalent)
 1. UATFComponent.Init(FaceId, ARKit, FaceMesh)  (AnimBP is kept by default)
 2. UATFApiClient.Login()  (optional; PlayFromAudio logs in automatically)
 3. UATFApiClient.PlayFromAudio(WavBytes)
+   Sample actor also has StartRecord / StopRecord (mic → 16 kHz WAV → PlayFromAudio)
 4. Bind AAudioToFaceManager: On Start Speech / On Stop Speech / On Stop Motion
 5. UATFComponent.Interrupt() to cancel playback
 

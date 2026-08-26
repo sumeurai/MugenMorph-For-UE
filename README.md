@@ -16,6 +16,7 @@ Get keys from the [Developers](https://www.sumeruai.us/) page before running the
 - Login + protobuf client (`UATFApiClient`), JSON fallback
 - One-click **Setup ATF** on a placed MetaHuman
 - Demo level from the official Basic lighting template
+- Sample mic record (16 kHz mono WAV → PlayFromAudio), same flow as Unity `AudioRecord`
 
 This public plugin does **not** include Avatar / DNA / TalkStream.
 
@@ -28,6 +29,7 @@ This public plugin does **not** include Avatar / DNA / TalkStream.
 | Character | Your own MetaHuman (import via Quixel / MetaHuman Creator) or an ARKit blendshape face |
 | Audio | PCM WAV. Sample clip is **16 kHz**, 16-bit mono |
 | MetaHuman | Enable **RigLogic** in the project (MetaHuman already does this) |
+| Mic record | **AudioCapture** (enabled by this plugin) |
 | Optional | LiveLink — only if you use the extra ATF AnimGraph node |
 
 The plugin does **not** ship a MetaHuman mesh, skeleton, or Epic’s `Face_AnimBP`.
@@ -52,9 +54,9 @@ Default endpoints:
 2. Fill Access Key / Secret Key (**SumeruAI → API Settings**).
 3. Import your MetaHuman (or ARKit face) into the level.
 4. Select the character → **SumeruAI → Setup ATF on Selected Actor**.
-5. Play. Overlay: **Play WAV** / **Browse** / **Interrupt**. Keys: `P` / `J` / `I`.
+5. Play. Overlay: **Browse** / **Start Record** / **Stop Record** / **Interrupt**. Keys: `J` / `R` / `I`.
 
-Empty keys show a hint and do not crash. Press **J** to pick any local WAV if you do not want the bundled silence clip.
+Empty keys show a hint and do not crash. Press **J** to pick a local WAV (same as Unity). **R** (or Start/Stop Record) captures the default microphone as 16 kHz mono WAV and sends it through `PlayFromAudio`, same as Unity `AudioRecord`.
 
 ### What Setup ATF does
 

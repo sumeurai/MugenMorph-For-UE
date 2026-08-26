@@ -31,7 +31,8 @@ public class SumeruAIATF : ModuleRules
 				"DeveloperSettings",
 				"Slate",
 				"SlateCore",
-				"InputCore"
+				"InputCore",
+				"AudioCaptureCore"
 			}
 		);
 

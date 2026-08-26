@@ -4,6 +4,7 @@
 
 #include "ATFApiClient.h"
 #include "ATFApiSettings.h"
+#include "ATFAudioRecord.h"
 #include "ATFComponent.h"
 #include "ATF_Type.h"
 #include "Input/Reply.h"
@@ -18,6 +19,7 @@
 #include "GameFramework/PlayerController.h"
 #include "InputCoreTypes.h"
 #include "Misc/Paths.h"
+#include "Modules/ModuleManager.h"
 #include "Widgets/SWidget.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Layout/SBorder.h"
@@ -39,7 +41,14 @@ AATFApiSampleActor::AATFApiSampleActor()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	Client = CreateDefaultSubobject<UATFApiClient>(TEXT("ATFApiClient"));
+	Recorder = new FATFAudioRecord();
 	StatusMessage = TEXT("SumeruAI ATF");
+}
+
+AATFApiSampleActor::~AATFApiSampleActor()
+{
+	delete Recorder;
+	Recorder = nullptr;
 }
 
 void AATFApiSampleActor::BeginPlay()
@@ -65,16 +74,15 @@ void AATFApiSampleActor::BeginPlay()
 		SetStatus(TEXT("Logging in..."));
 		Client->Login();
 	}
-
-	if (bRequestOnBeginPlay)
-	{
-		PlayFromAudioFile();
-	}
 }
 
 void AATFApiSampleActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	HideOverlay();
+	if (Recorder)
+	{
+		Recorder->Abort();
+	}
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -152,13 +160,8 @@ void AATFApiSampleActor::BindInput()
 		return;
 	}
 	InputComponent->BindKey(EKeys::J, IE_Pressed, this, &AATFApiSampleActor::InputBrowseWav);
-	InputComponent->BindKey(EKeys::P, IE_Pressed, this, &AATFApiSampleActor::InputPlayWav);
 	InputComponent->BindKey(EKeys::I, IE_Pressed, this, &AATFApiSampleActor::InputInterrupt);
-}
-
-void AATFApiSampleActor::InputPlayWav()
-{
-	PlayFromAudioFile();
+	InputComponent->BindKey(EKeys::R, IE_Pressed, this, &AATFApiSampleActor::InputToggleRecord);
 }
 
 void AATFApiSampleActor::InputBrowseWav()
@@ -169,6 +172,18 @@ void AATFApiSampleActor::InputBrowseWav()
 void AATFApiSampleActor::InputInterrupt()
 {
 	InterruptPlayback();
+}
+
+void AATFApiSampleActor::InputToggleRecord()
+{
+	if (IsRecording())
+	{
+		StopRecord();
+	}
+	else
+	{
+		StartRecord();
+	}
 }
 
 bool AATFApiSampleActor::HasCredentials() const
@@ -209,7 +224,7 @@ void AATFApiSampleActor::ShowOverlay()
 	HideOverlay();
 
 	TSharedRef<SWidget> Overlay = SNew(SBox)
-		.WidthOverride(460.f)
+		.WidthOverride(520.f)
 		.Padding(FMargin(16.f))
 		[
 			SNew(SBorder)
@@ -230,21 +245,11 @@ void AATFApiSampleActor::ShowOverlay()
 				+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 0.f, 0.f, 4.f)
 				[
 					SNew(STextBlock)
-					.Text(FText::FromString(TEXT("P Play WAV   J Browse   I Interrupt")))
+					.Text(FText::FromString(TEXT("J Browse   R Record   I Interrupt")))
 				]
 				+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 4.f, 0.f, 0.f)
 				[
 					SNew(SHorizontalBox)
-					+ SHorizontalBox::Slot().AutoWidth().Padding(0.f, 0.f, 8.f, 0.f)
-					[
-						SNew(SButton)
-						.Text(FText::FromString(TEXT("Play WAV")))
-						.OnClicked_Lambda([this]()
-						{
-							PlayFromAudioFile();
-							return FReply::Handled();
-						})
-					]
 					+ SHorizontalBox::Slot().AutoWidth().Padding(0.f, 0.f, 8.f, 0.f)
 					[
 						SNew(SButton)
@@ -262,6 +267,33 @@ void AATFApiSampleActor::ShowOverlay()
 						.OnClicked_Lambda([this]()
 						{
 							InterruptPlayback();
+							return FReply::Handled();
+						})
+					]
+				]
+				+ SVerticalBox::Slot().AutoHeight().Padding(0.f, 8.f, 0.f, 0.f)
+				[
+					SNew(SHorizontalBox)
+					+ SHorizontalBox::Slot().AutoWidth().Padding(0.f, 0.f, 8.f, 0.f)
+					[
+						SNew(SButton)
+						.Text_Lambda([this]()
+						{
+							return FText::FromString(IsRecording() ? TEXT("Recording...") : TEXT("Start Record"));
+						})
+						.OnClicked_Lambda([this]()
+						{
+							StartRecord();
+							return FReply::Handled();
+						})
+					]
+					+ SHorizontalBox::Slot().AutoWidth()
+					[
+						SNew(SButton)
+						.Text(FText::FromString(TEXT("Stop Record")))
+						.OnClicked_Lambda([this]()
+						{
+							StopRecord();
 							return FReply::Handled();
 						})
 					]
@@ -310,11 +342,6 @@ bool AATFApiSampleActor::RequestFromWavFilePath(const FString& AbsoluteOrRelativ
 	return Client->RequestFromWavFile(WavFilePath, TEXT("start"));
 }
 
-bool AATFApiSampleActor::PlayFromAudioFile()
-{
-	return RequestFromWavFilePath(WavFilePath);
-}
-
 bool AATFApiSampleActor::BrowseAndPlayWav()
 {
 #if WITH_EDITOR
@@ -340,8 +367,8 @@ bool AATFApiSampleActor::BrowseAndPlayWav()
 	}
 	return RequestFromWavFilePath(Files[0]);
 #else
-	SetStatus(TEXT("Browse is Editor/PIE only. Set WavFilePath on the actor."));
-	return PlayFromAudioFile();
+	SetStatus(TEXT("Browse is Editor/PIE only."));
+	return false;
 #endif
 }
 
@@ -354,9 +381,59 @@ void AATFApiSampleActor::InterruptPlayback()
 	SetStatus(TEXT("Interrupted."));
 }
 
+void AATFApiSampleActor::StartRecord()
+{
+	if (!Recorder)
+	{
+		Recorder = new FATFAudioRecord();
+	}
+	if (Recorder->IsRecording())
+	{
+		return;
+	}
+
+	FModuleManager::Get().LoadModule(TEXT("AudioCapture"));
+
+	if (!Recorder->Start(MaxRecordSeconds))
+	{
+		SetStatus(TEXT("Record failed. Check the default microphone."));
+		return;
+	}
+	SetStatus(TEXT("Recording... press Stop Record or R."));
+}
+
+void AATFApiSampleActor::StopRecord()
+{
+	if (!Recorder || !Recorder->IsRecording())
+	{
+		return;
+	}
+
+	TArray<uint8> WavBytes;
+	if (!Recorder->Stop(WavBytes))
+	{
+		SetStatus(TEXT("Record failed (empty capture)."));
+		return;
+	}
+	if (!Client)
+	{
+		SetStatus(TEXT("Client component missing."));
+		return;
+	}
+
+	Client->Interrupt();
+	SetStatus(FString::Printf(TEXT("Recorded %d bytes. Sending ATF..."), WavBytes.Num()));
+	Client->PlayFromAudio(WavBytes);
+}
+
+bool AATFApiSampleActor::IsRecording() const
+{
+	return Recorder && Recorder->IsRecording();
+}
+
 void AATFApiSampleActor::HandleLoginSucceeded(const FString& AccessToken)
 {
-	SetStatus(TEXT("Login ok. Press P to play WAV, or J to browse."));
+	SetStatus(TEXT("Login ok. Press J to browse a WAV, or R to record."));
 }
 
 void AATFApiSampleActor::HandleRequestSucceeded(const FATFRepData& Response, const FString& TraceId)

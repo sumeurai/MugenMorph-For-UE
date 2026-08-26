@@ -31,7 +31,7 @@ namespace
 
 	const TCHAR* BizType = TEXT("13");
 	const TCHAR* EventType = TEXT("2");
-	const TCHAR* EventKey = TEXT("sdk/ue/install_success");
+	const TCHAR* EventKey = TEXT("sdk/atfue/install_success");
 	const TCHAR* Product = TEXT("atf");
 	const TCHAR* StatPackageName = TEXT("atf");
 }
