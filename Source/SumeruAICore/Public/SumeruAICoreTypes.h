@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #pragma once
 
@@ -22,13 +22,13 @@ struct SUMERUAICORE_API FAudioExpressionData
 public:
 	TArray<FAudioExpression> Expressions;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ATF")
 	float Interval;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ATF")
 	int CurFrame;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ATF")
 	float UsedTime;
 
 public:

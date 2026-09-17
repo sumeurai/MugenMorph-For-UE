@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #pragma once
 #include "Animation/AnimNodeBase.h"
@@ -32,10 +32,10 @@ public:
 	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SourceData, meta = (PinShownByDefault))
 		FAudioExpressionData CustomExpression;*/
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SourceData)
 		int FrameCount;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SourceData)
 		float PlayInterval;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = SourceData, meta = (PinShownByDefault))

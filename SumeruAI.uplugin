@@ -1,9 +1,9 @@
 {
 	"FileVersion": 3,
-	"Version": 1,
-	"VersionName": "1.0.0",
+	"Version": 6,
+	"VersionName": "0.0.6",
 	"FriendlyName": "SumeruAI ATF",
-	"Description": "Unity-compatible Audio-to-Face: login + offline-mesh protobuf, MetaHuman Face Sync (RigLogic curves), optional LiveLink AnimGraph nodes. Does not include Avatar or TalkStream.",
+	"Description": "Audio-to-Face for Unreal Engine. Engine plugin dependencies: LiveLink (optional AnimGraph node) and AudioCapture (sample mic record). Login + offline-mesh protobuf, MetaHuman Face Sync (RigLogic curves). Does not include Avatar or TalkStream.",
 	"Category": "Animation",
 	"CreatedBy": "SumeruAI",
 	"CreatedByURL": "https://www.sumeruai.us/",
@@ -30,27 +30,42 @@
 		{
 			"Name": "SumeruAICore",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "SumeruAIATF",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "SumeruAIATFEditor",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "SumeruIKRuntime",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		},
 		{
 			"Name": "SumeruIKEditor",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
 		}
 	]
 }

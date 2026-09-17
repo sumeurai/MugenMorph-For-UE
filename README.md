@@ -2,8 +2,6 @@
 
 Send a WAV clip to the [SumeruAI](https://www.sumeruai.us/) Audio-to-Face API and play speech-synchronized facial animation on a MetaHuman or any ARKit-named face.
 
-This is the Unreal counterpart of the Unity SumeruAI AudioToFace plugin: **the same Access Key, Secret Key, login, and offline-mesh API**.
-
 Get keys from the [Developers](https://www.sumeruai.us/) page before running the sample.
 
 > Do not commit real keys. Use **Edit → Project Settings → SumeruAI → ATF API** or a local Data Asset.
@@ -16,7 +14,7 @@ Get keys from the [Developers](https://www.sumeruai.us/) page before running the
 - Login + protobuf client (`UATFApiClient`), JSON fallback
 - One-click **Setup ATF** on a placed MetaHuman
 - Demo level from the official Basic lighting template
-- Sample mic record (16 kHz mono WAV → PlayFromAudio), same flow as Unity `AudioRecord`
+- Sample mic record (16 kHz mono WAV → PlayFromAudio)
 
 This public plugin does **not** include Avatar / DNA / TalkStream.
 
@@ -24,13 +22,12 @@ This public plugin does **not** include Avatar / DNA / TalkStream.
 
 | Item | Note |
 | --- | --- |
-| Unreal Engine | **5.3** or newer |
+| Unreal Engine | **5.3** or newer (Fab zip must match your engine version) |
+| Engine plugins | **LiveLink** (optional AnimGraph node) and **AudioCapture** (sample mic record). This plugin enables both. |
 | Network | HTTPS to `https://api.sumeruai.us/` |
 | Character | Your own MetaHuman (import via Quixel / MetaHuman Creator) or an ARKit blendshape face |
 | Audio | PCM WAV. Sample clip is **16 kHz**, 16-bit mono |
 | MetaHuman | Enable **RigLogic** in the project (MetaHuman already does this) |
-| Mic record | **AudioCapture** (enabled by this plugin) |
-| Optional | LiveLink — only if you use the extra ATF AnimGraph node |
 
 The plugin does **not** ship a MetaHuman mesh, skeleton, or Epic’s `Face_AnimBP`.
 
@@ -50,13 +47,13 @@ Default endpoints:
 
 ## Quick start
 
-1. **SumeruAI → Create ATF Demo Level** (saves `/SumeruAI/Sample/AudioToFace/ATF_Demo`, Basic lighting).
+1. **SumeruAI → Create ATF Demo Level** (saves `/SumeruAI/SumeruAI/Sample/AudioToFace/ATF_Demo`, Basic lighting).
 2. Fill Access Key / Secret Key (**SumeruAI → API Settings**).
 3. Import your MetaHuman (or ARKit face) into the level.
 4. Select the character → **SumeruAI → Setup ATF on Selected Actor**.
 5. Play. Overlay: **Browse** / **Start Record** / **Stop Record** / **Interrupt**. Keys: `J` / `R` / `I`.
 
-Empty keys show a hint and do not crash. Press **J** to pick a local WAV (same as Unity). **R** (or Start/Stop Record) captures the default microphone as 16 kHz mono WAV and sends it through `PlayFromAudio`, same as Unity `AudioRecord`.
+Empty keys show a hint and do not crash. Press **J** to pick a local WAV. **R** (or Start/Stop Record) captures the default microphone as 16 kHz mono WAV and sends it through `PlayFromAudio`.
 
 ### What Setup ATF does
 
@@ -81,7 +78,7 @@ ApiClient->PlayFromAudio(WavBytes);
 3. Bind `AAudioToFaceManager`: On Start Speech / On Stop Speech / On Stop Motion.
 4. `UATFComponent::Interrupt()` or `UATFApiClient::Interrupt()` to cancel.
 
-## API (same as Unity)
+## API
 
 1. **Login** `POST v1/access/auth`  
    Body `{ "accessKey", "secretKey" }` → `accessToken`  
@@ -105,10 +102,10 @@ Legacy `v1/audio-to-face/mesh` JSON still works if you set that path (no `offlin
 - The Face AnimBP Target Skeleton is the project’s `/Game/MetaHumans/Common/Face/Face_Archetype_Skeleton` (same pattern as Convai). Import a MetaHuman first so that skeleton exists.
 - Custom faces: name morphs close to ARKit (`JawOpen`, `MouthSmileLeft`, …).
 
-More sample notes: [`Content/Sample/AudioToFace/README_ATF.txt`](Content/Sample/AudioToFace/README_ATF.txt).
+More sample notes: [`Content/SumeruAI/Sample/AudioToFace/README_ATF.txt`](Content/SumeruAI/Sample/AudioToFace/README_ATF.txt).
 
 ## License
 
-Plugin source: see [LICENSE](LICENSE).  
+Distributed on Fab under the Fab Standard License.  
 SumeruAI cloud API: your account terms on [sumeruai.us](https://www.sumeruai.us/).  
 Third-party libraries: [ThirdPartyNotices.md](ThirdPartyNotices.md).

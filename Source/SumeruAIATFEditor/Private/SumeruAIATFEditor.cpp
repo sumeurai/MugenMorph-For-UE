@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "SumeruAIATFEditor.h"
 
@@ -232,7 +232,7 @@ void FSumeruAIATFEditorModule::RegisterMenus()
 			AtfSection.AddMenuEntry(
 				"CreateDemo",
 				LOCTEXT("CreateDemo", "Create ATF Demo Level"),
-				LOCTEXT("CreateDemoTip", "Create or open Content/Sample/AudioToFace/ATF_Demo"),
+				LOCTEXT("CreateDemoTip", "Create or open Content/SumeruAI/Sample/AudioToFace/ATF_Demo"),
 				FSlateIcon(),
 				FUIAction(FExecuteAction::CreateStatic(&FSumeruAIATFEditorModule::CreateAtfDemoLevel)));
 			AtfSection.AddMenuEntry(
@@ -269,7 +269,7 @@ void FSumeruAIATFEditorModule::OpenApiSettings()
 
 void FSumeruAIATFEditorModule::CreateAtfDemoLevel()
 {
-	const FString PackageName = TEXT("/SumeruAI/Sample/AudioToFace/ATF_Demo");
+	const FString PackageName = TEXT("/SumeruAI/SumeruAI/Sample/AudioToFace/ATF_Demo");
 	const FString Filename = FPackageName::LongPackageNameToFilename(
 		PackageName, FPackageName::GetMapPackageExtension());
 	IFileManager::Get().MakeDirectory(*FPaths::GetPath(Filename), true);
@@ -312,7 +312,7 @@ void FSumeruAIATFEditorModule::CreateAtfDemoLevel()
 			? LOCTEXT("DemoLoaded",
 				"Opened ATF_Demo (Basic lighting).\n1. Edit -> Project Settings -> SumeruAI -> ATF API\n2. Import your MetaHuman (or any ARKit face) into the level\n3. Select it -> SumeruAI -> Setup ATF on Selected Actor\n4. Press Play (PIE)")
 			: LOCTEXT("DemoCreated",
-				"Saved /SumeruAI/Sample/AudioToFace/ATF_Demo from the Basic template.\nFill Access Key / Secret Key, import a MetaHuman, then SumeruAI -> Setup ATF on Selected Actor."));
+				"Saved /SumeruAI/SumeruAI/Sample/AudioToFace/ATF_Demo from the Basic template.\nFill Access Key / Secret Key, import a MetaHuman, then SumeruAI -> Setup ATF on Selected Actor."));
 }
 
 void FSumeruAIATFEditorModule::SetupAtfOnSelection()

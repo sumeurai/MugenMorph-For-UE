@@ -35,3 +35,12 @@ Used for NPZ (idle emote) loading in SumeruAICore.
 - **URL**: https://github.com/mackron/dr_libs
 
 Used to decode MP3 audio returned by the Audio-to-Face API.
+
+## cnpy
+
+- **License**: MIT
+- **Copyright**: © 2011 Carl Rogers
+- **URL**: https://github.com/rogersce/cnpy
+- **Modification**: namespace renamed to `cnpyy`
+
+Used with zlib to read NPZ / NPY idle emote arrays.

@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "ATFAudioRecord.h"
 
@@ -171,7 +171,7 @@ void FATFAudioRecord::OnCapture(
 	if (CapturedMono.Num() > MaxSamples)
 	{
 		const int32 Extra = CapturedMono.Num() - MaxSamples;
-		CapturedMono.RemoveAt(0, Extra, false);
+		CapturedMono.RemoveAt(0, Extra);
 	}
 
 	if (bOverflow)

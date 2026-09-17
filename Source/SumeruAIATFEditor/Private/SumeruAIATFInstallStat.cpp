@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "SumeruAIATFInstallStat.h"
 
@@ -16,6 +16,7 @@
 #include "Misc/ConfigCacheIni.h"
 #include "Misc/EngineVersion.h"
 #include "Misc/Guid.h"
+#include "Runtime/Launch/Resources/Version.h"
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
@@ -57,14 +58,22 @@ void FSumeruAIATFInstallStat::Startup()
 		return;
 	}
 
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+	PostEngineInitHandle = FCoreDelegates::GetOnPostEngineInit().AddStatic(&FSumeruAIATFInstallStat::ScheduleTryReport);
+#else
 	PostEngineInitHandle = FCoreDelegates::OnPostEngineInit.AddStatic(&FSumeruAIATFInstallStat::ScheduleTryReport);
+#endif
 }
 
 void FSumeruAIATFInstallStat::Shutdown()
 {
 	if (PostEngineInitHandle.IsValid())
 	{
+#if ENGINE_MAJOR_VERSION > 5 || (ENGINE_MAJOR_VERSION == 5 && ENGINE_MINOR_VERSION >= 8)
+		FCoreDelegates::GetOnPostEngineInit().Remove(PostEngineInitHandle);
+#else
 		FCoreDelegates::OnPostEngineInit.Remove(PostEngineInitHandle);
+#endif
 		PostEngineInitHandle.Reset();
 	}
 }

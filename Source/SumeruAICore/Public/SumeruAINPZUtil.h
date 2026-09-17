@@ -1,9 +1,10 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "SumeruAICoreTypes.h"
+#include "Templates/PimplPtr.h"
 #include "SumeruAINPZUtil.generated.h"
 
 UCLASS()
@@ -46,5 +47,5 @@ public:
 
 private:
 	struct FNpzState;
-	TUniquePtr<FNpzState> State;
+	TPimplPtr<FNpzState> State;
 };

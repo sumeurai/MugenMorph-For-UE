@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "SumeruAIATFSetup.h"
 
@@ -285,7 +285,7 @@ namespace
 		return AnimClass ? Cast<UAnimBlueprint>(AnimClass->ClassGeneratedBy) : nullptr;
 	}
 
-	const TCHAR* PluginFaceAnimBPPath = TEXT("/SumeruAI/MetaHumans/Animations/SumeruAI_MetaHuman_FaceAnim.SumeruAI_MetaHuman_FaceAnim");
+	const TCHAR* PluginFaceAnimBPPath = TEXT("/SumeruAI/SumeruAI/MetaHumans/Animations/SumeruAI_MetaHuman_FaceAnim.SumeruAI_MetaHuman_FaceAnim");
 	const TCHAR* ProjectFaceAnimBPPath = TEXT("/Game/SumeruAI/MetaHumans/Animations/SumeruAI_MetaHuman_FaceAnim.SumeruAI_MetaHuman_FaceAnim");
 	const TCHAR* ProjectFaceAnimBPDir = TEXT("/Game/SumeruAI/MetaHumans/Animations");
 	const TCHAR* CommonFaceAnimBPPath = TEXT("/Game/MetaHumans/Common/Face/Face_AnimBP.Face_AnimBP");

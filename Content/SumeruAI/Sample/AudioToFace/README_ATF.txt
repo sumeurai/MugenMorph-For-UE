@@ -1,7 +1,7 @@
 Sumeru ATF (GitHub / Fab)
 =========================
 
-Public slice: login + offline Audio-to-Face. Same Access Key / Secret Key as the Unity plugin.
+Public slice: login + offline Audio-to-Face. Get Access Key / Secret Key from https://www.sumeruai.us/
 Recommended face path: UATFComponent + Face AnimBP node "SumeruAI ATF Face Sync"
 (writes ARKit / CTRL_expressions_* curves before RigLogic).
 Optional: SumeruIK LiveLink node.
@@ -30,8 +30,8 @@ Setup
    - Setup inserts "SumeruAI ATF Face Sync" before RigLogic; save Face_AnimBP
    - MotionType ARKit (JawOpen / CTRL_expressions_jawOpen)
 
-Online API (Unity-compatible)
------------------------------
+Online API
+----------
 Login: POST v1/access/auth  {accessKey, secretKey}
        Header Authorization is the raw accessToken (no Bearer prefix).
 
@@ -53,17 +53,17 @@ Menu: SumeruAI -> Create ATF Demo Level  (saves ATF_Demo)
 2. Import a MetaHuman, select it, SumeruAI -> Setup ATF on Selected Actor.
    Setup wires the sample actor FaceMesh when one is in the level.
 3. PIE overlay: Browse / Start Record / Stop Record / Interrupt.
-   Keys: J / R / I (same as Unity: pick a WAV, or record then PlayFromAudio).
+   Keys: J / R / I (pick a WAV, or record then PlayFromAudio).
    Record uses the default microphone, encodes 16 kHz mono PCM WAV, then PlayFromAudio.
 
 The client logs in if needed, POSTs the wav, then feeds PCM + 61-float frames
 into AAudioToFaceManager via EnqueueExternalSpeech.
 Response audio may be WAV, PCM16, or MP3. If the server omits audio, the local wav is used.
-A second PlayFromAudio while busy is ignored (Unity atfRequesting).
+A second PlayFromAudio while busy is ignored.
 UATFApiClient.Interrupt() stops HTTP, audio, and mouth.
 
-Blueprint (Unity PlayFromAudio equivalent)
------------------------------------------
+Blueprint
+---------
 1. UATFComponent.Init(FaceId, ARKit, FaceMesh)  (AnimBP is kept by default)
 2. UATFApiClient.Login()  (optional; PlayFromAudio logs in automatically)
 3. UATFApiClient.PlayFromAudio(WavBytes)

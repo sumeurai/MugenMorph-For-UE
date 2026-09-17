@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "SumeruAINPZUtil.h"
 #include "SumeruAILog.h"
@@ -22,7 +22,7 @@ namespace SumeruAINPZUtilPrivate
 USumeruAINPZUtil::USumeruAINPZUtil()
 	: Width(0)
 	, Height(0)
-	, State(MakeUnique<FNpzState>())
+	, State(MakePimpl<FNpzState>())
 {
 }
 

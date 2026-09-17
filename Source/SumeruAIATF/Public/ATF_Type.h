@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #pragma once
 
@@ -12,10 +12,10 @@ struct FSubtitle
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ATF")
 	FString text;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "ATF")
 	float time = 0.f;
 };
 
@@ -124,7 +124,7 @@ struct FATFExpressionBuffer
 	{
 		if (ReadIndex > 0 && (ReadIndex >= 64 || ReadIndex * 2 >= Frames.Num()))
 		{
-			Frames.RemoveAt(0, ReadIndex, false);
+			Frames.RemoveAt(0, ReadIndex);
 			ReadIndex = 0;
 		}
 	}
@@ -136,25 +136,25 @@ struct FAudioCacheData
 	GENERATED_USTRUCT_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float HeadRoll = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float HeadPitch = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float HeadYaw = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float JawRoll = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float JawPitch = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	float JawYaw = 0.f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 	bool StartEmote = false;
 
 	float MaleJawOpenOffset = 0.f;

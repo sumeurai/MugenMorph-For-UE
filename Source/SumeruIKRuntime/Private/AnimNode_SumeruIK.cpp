@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 
 #include "AnimNode_SumeruIK.h"
@@ -47,7 +47,7 @@ void FAnimNode_SumeruIK::EvaluateSkeletalControl_AnyThread(FComponentSpacePoseCo
 
 	int BonesNum = BoneContainer.GetNumBones();
 
-	for (size_t i = 0; i < BonesNum; i++)
+	for (int32 i = 0; i < BonesNum; i++)
 	{
 		CompactPoseBonesToModify.Add(FCompactPoseBoneIndex(i));
 	}

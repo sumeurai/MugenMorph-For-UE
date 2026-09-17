@@ -1,5 +1,6 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
+using System.IO;
 using UnrealBuildTool;
 
 public class SumeruAIATF : ModuleRules
@@ -9,7 +10,7 @@ public class SumeruAIATF : ModuleRules
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
 		PublicIncludePaths.Add(ModuleDirectory + "/Sample");
-		PrivateIncludePaths.Add(ModuleDirectory + "/Private/ThirdParty");
+		PrivateIncludePaths.Add(Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "ThirdParty", "dr_mp3")));
 
 		PublicDependencyModuleNames.AddRange(
 			new string[]

@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #pragma once
 
@@ -16,12 +16,12 @@ class SUMERUAIATF_API UAudioToFaceAnim : public UAnimInstance
 	GENERATED_BODY()
 
 public:	
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
         int FaceId;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ATF")
 		FAudioExpression FacialTempData;
 
-    UFUNCTION(BlueprintCallable)
+    UFUNCTION(BlueprintCallable, Category = "ATF")
         UAnimInstance* GetSelfInstance();
 };

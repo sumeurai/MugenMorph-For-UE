@@ -1,5 +1,6 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
+using System.IO;
 using UnrealBuildTool;
 
 public class SumeruAICore : ModuleRules
@@ -23,8 +24,9 @@ public class SumeruAICore : ModuleRules
 			}
 		);
 
-		PublicAdditionalLibraries.Add("$(PluginDir)/ThirdParty/zlib/zlib.lib");
-		PublicIncludePaths.Add("$(PluginDir)/ThirdParty/zlib");
-		PrivateIncludePaths.Add(ModuleDirectory + "/Private/LoadModelData");
+		string ThirdParty = Path.GetFullPath(Path.Combine(ModuleDirectory, "..", "ThirdParty"));
+		PublicAdditionalLibraries.Add(Path.Combine(ThirdParty, "zlib", "zlib.lib"));
+		PublicIncludePaths.Add(Path.Combine(ThirdParty, "zlib"));
+		PrivateIncludePaths.Add(Path.Combine(ThirdParty, "cnpy"));
 	}
 }

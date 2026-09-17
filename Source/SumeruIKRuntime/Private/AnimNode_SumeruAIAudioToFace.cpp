@@ -1,6 +1,5 @@
-//// Copyright SumeruAI. All Rights Reserved.
-//
-//
+// Copyright 2026 SumeruAI. All Rights Reserved.
+
 #include "AnimNode_SumeruAIAudioToFace.h"
 
 #include "ILiveLinkClient.h"

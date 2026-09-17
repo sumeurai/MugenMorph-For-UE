@@ -1,4 +1,4 @@
-// Copyright SumeruAI. All Rights Reserved.
+// Copyright 2026 SumeruAI. All Rights Reserved.
 
 #include "ATFAudioDecoder.h"
 
@@ -6,7 +6,7 @@
 
 #define DR_MP3_NO_STDIO
 #define DR_MP3_IMPLEMENTATION
-#include "dr_mp3.h"
+#include "../../ThirdParty/dr_mp3/dr_mp3.h"
 
 namespace ATFAudioDecoder
 {
