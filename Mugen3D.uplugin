@@ -1,0 +1,71 @@
+{
+	"FileVersion": 3,
+	"Version": 7,
+	"VersionName": "0.0.7",
+	"FriendlyName": "Mugen3D MugenMorph",
+	"Description": "Audio-to-Face for Unreal Engine. Engine plugin dependencies: LiveLink (optional AnimGraph node) and AudioCapture (sample mic record). Login + offline-mesh protobuf, MetaHuman Face Sync (RigLogic curves). Does not include Avatar or TalkStream.",
+	"Category": "Animation",
+	"CreatedBy": "Mugen3D",
+	"CreatedByURL": "https://mugen3d.ai/",
+	"DocsURL": "https://mugen3d.ai/",
+	"MarketplaceURL": "",
+	"FabURL": "",
+	"SupportURL": "https://mugen3d.ai/",
+	"EngineVersion": "5.3.0",
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Plugins": [
+		{
+			"Name": "LiveLink",
+			"Enabled": true
+		},
+		{
+			"Name": "AudioCapture",
+			"Enabled": true
+		}
+	],
+	"Modules": [
+		{
+			"Name": "Mugen3DCore",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Mugen3DMugenMorph",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Mugen3DMugenMorphEditor",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Mugen3DIKRuntime",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		},
+		{
+			"Name": "Mugen3DIKEditor",
+			"Type": "UncookedOnly",
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64"
+			]
+		}
+	]
+}

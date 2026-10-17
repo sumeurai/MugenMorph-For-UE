@@ -26,7 +26,7 @@ freely, subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 ```
 
-Used for NPZ (idle emote) loading in SumeruAICore.
+Used for NPZ (idle emote) loading in Mugen3DCore.
 
 ## dr_mp3
 
