@@ -4,24 +4,24 @@
 
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
-#include "SumeruMugenMorphSubsystem.generated.h"
+#include "MugenMorphSubsystem.generated.h"
 
 class AMugenMorphManager;
 
 /**
- * World entry point for Sumeru MugenMorph. Resolves (or spawns) the level's AMugenMorphManager.
+ * World entry point for Mugen3D MugenMorph. Resolves (or spawns) the level's AMugenMorphManager.
  * Prefer this over AMugenMorphManager::Instance() in new code.
  */
 UCLASS()
-class MUGEN3DMUGENMORPH_API USumeruMugenMorphSubsystem : public UWorldSubsystem
+class MUGEN3DMUGENMORPH_API UMugenMorphSubsystem : public UWorldSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	static USumeruMugenMorphSubsystem* Get(const UObject* WorldContextObject);
+	static UMugenMorphSubsystem* Get(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category = "MugenMorph", meta = (WorldContext = "WorldContextObject", DisplayName = "Get MugenMorph Subsystem"))
-	static USumeruMugenMorphSubsystem* GetMugenMorphSubsystem(const UObject* WorldContextObject);
+	static UMugenMorphSubsystem* GetMugenMorphSubsystem(const UObject* WorldContextObject);
 
 	/** Cached/looked-up manager for this world (may be null). Does not spawn. */
 	UFUNCTION(BlueprintPure, Category = "MugenMorph")

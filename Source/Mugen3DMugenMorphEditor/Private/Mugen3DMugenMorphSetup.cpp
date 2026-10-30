@@ -4,7 +4,7 @@
 
 #include "AnimGraphNode_Base.h"
 #include "AnimGraphNode_Root.h"
-#include "AnimGraphNode_SumeruMugenMorphFaceSync.h"
+#include "AnimGraphNode_MugenMorphFaceSync.h"
 #include "Animation/AnimBlueprint.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/AnimNodeBase.h"
@@ -214,7 +214,7 @@ namespace
 		}
 		for (const UEdGraphNode* Node : Graph->Nodes)
 		{
-			if (Cast<UAnimGraphNode_SumeruMugenMorphFaceSync>(Node))
+			if (Cast<UAnimGraphNode_MugenMorphFaceSync>(Node))
 			{
 				return true;
 			}
@@ -301,7 +301,7 @@ namespace
 		FaceMesh->SetAnimInstanceClass(AnimBP->GeneratedClass);
 	}
 
-	UAnimBlueprint* LoadSumeruFaceAnimBP()
+	UAnimBlueprint* LoadMugen3DFaceAnimBP()
 	{
 		if (UAnimBlueprint* PluginBP = LoadObject<UAnimBlueprint>(nullptr, PluginFaceAnimBPPath))
 		{
@@ -379,7 +379,7 @@ namespace
 		Chosen->Modify();
 		ChosenGraph->Modify();
 
-		UAnimGraphNode_SumeruMugenMorphFaceSync* NewNode = NewObject<UAnimGraphNode_SumeruMugenMorphFaceSync>(ChosenGraph);
+		UAnimGraphNode_MugenMorphFaceSync* NewNode = NewObject<UAnimGraphNode_MugenMorphFaceSync>(ChosenGraph);
 		if (!NewNode)
 		{
 			OutMessage = TEXT("failed to create MugenMorph Face Sync node");
@@ -434,10 +434,10 @@ namespace
 
 bool FMugen3DMugenMorphSetup::InsertFaceSyncIntoFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage)
 {
-	return AssignSumeruFaceAnimBP(FaceMesh, OutMessage);
+	return AssignMugen3DFaceAnimBP(FaceMesh, OutMessage);
 }
 
-bool FMugen3DMugenMorphSetup::AssignSumeruFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage)
+bool FMugen3DMugenMorphSetup::AssignMugen3DFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage)
 {
 	if (!FaceMesh)
 	{
@@ -445,7 +445,7 @@ bool FMugen3DMugenMorphSetup::AssignSumeruFaceAnimBP(USkeletalMeshComponent* Fac
 		return false;
 	}
 
-	UAnimBlueprint* Dedicated = LoadSumeruFaceAnimBP();
+	UAnimBlueprint* Dedicated = LoadMugen3DFaceAnimBP();
 	if (!Dedicated)
 	{
 		FString DuplicateError;

@@ -1,6 +1,6 @@
 // Copyright 2026 Mugen3D. All Rights Reserved.
 
-#include "Animation/AnimNode_SumeruMugenMorphFaceSync.h"
+#include "Animation/AnimNode_MugenMorphFaceSync.h"
 
 #include "MugenMorphComponent.h"
 #include "Animation/AnimCurveUtils.h"
@@ -9,30 +9,30 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/Actor.h"
 
-FAnimNode_SumeruMugenMorphFaceSync::FAnimNode_SumeruMugenMorphFaceSync()
+FAnimNode_MugenMorphFaceSync::FAnimNode_MugenMorphFaceSync()
 {
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::Initialize_AnyThread(const FAnimationInitializeContext& Context)
+void FAnimNode_MugenMorphFaceSync::Initialize_AnyThread(const FAnimationInitializeContext& Context)
 {
 	DECLARE_SCOPE_HIERARCHICAL_COUNTER_ANIMNODE(Initialize_AnyThread)
 	SourcePose.Initialize(Context);
 	ResolvedComponent = nullptr;
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::CacheBones_AnyThread(const FAnimationCacheBonesContext& Context)
+void FAnimNode_MugenMorphFaceSync::CacheBones_AnyThread(const FAnimationCacheBonesContext& Context)
 {
 	DECLARE_SCOPE_HIERARCHICAL_COUNTER_ANIMNODE(CacheBones_AnyThread)
 	SourcePose.CacheBones(Context);
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::Update_AnyThread(const FAnimationUpdateContext& Context)
+void FAnimNode_MugenMorphFaceSync::Update_AnyThread(const FAnimationUpdateContext& Context)
 {
 	DECLARE_SCOPE_HIERARCHICAL_COUNTER_ANIMNODE(Update_AnyThread)
 	SourcePose.Update(Context);
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::PreUpdate(const UAnimInstance* InAnimInstance)
+void FAnimNode_MugenMorphFaceSync::PreUpdate(const UAnimInstance* InAnimInstance)
 {
 	if (MugenMorphComponent && IsValid(MugenMorphComponent))
 	{
@@ -67,7 +67,7 @@ void FAnimNode_SumeruMugenMorphFaceSync::PreUpdate(const UAnimInstance* InAnimIn
 	ResolvedComponent = Found;
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::Evaluate_AnyThread(FPoseContext& Output)
+void FAnimNode_MugenMorphFaceSync::Evaluate_AnyThread(FPoseContext& Output)
 {
 	DECLARE_SCOPE_HIERARCHICAL_COUNTER_ANIMNODE(Evaluate_AnyThread)
 	SourcePose.Evaluate(Output);
@@ -114,7 +114,7 @@ void FAnimNode_SumeruMugenMorphFaceSync::Evaluate_AnyThread(FPoseContext& Output
 	Output.Curve.Combine(OurCurve);
 }
 
-void FAnimNode_SumeruMugenMorphFaceSync::GatherDebugData(FNodeDebugData& DebugData)
+void FAnimNode_MugenMorphFaceSync::GatherDebugData(FNodeDebugData& DebugData)
 {
 	DECLARE_SCOPE_HIERARCHICAL_COUNTER_ANIMNODE(GatherDebugData)
 	DebugData.AddDebugItem(DebugData.GetNodeName(this));

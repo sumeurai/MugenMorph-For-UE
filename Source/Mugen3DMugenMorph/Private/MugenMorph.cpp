@@ -4,8 +4,8 @@
 #include "MugenMorphComponent.h"
 #include "MugenMorphAnim.h"
 #include "Mugen3DNPZUtil.h"
-#include "SumeruMugenMorphLog.h"
-#include "SumeruMugenMorphSubsystem.h"
+#include "MugenMorphLog.h"
+#include "MugenMorphSubsystem.h"
 #include "Mugen3DLog.h"
 #include "Mugen3DPaths.h"
 #include "Components/AudioComponent.h"
@@ -37,7 +37,7 @@ AMugenMorphManager* AMugenMorphManager::Instance()
 
 AMugenMorphManager* AMugenMorphManager::GetOrCreate(const UObject* WorldContextObject)
 {
-	if (USumeruMugenMorphSubsystem* Subsystem = USumeruMugenMorphSubsystem::Get(WorldContextObject))
+	if (UMugenMorphSubsystem* Subsystem = UMugenMorphSubsystem::Get(WorldContextObject))
 	{
 		return Subsystem->EnsureManager();
 	}
@@ -54,13 +54,13 @@ void AMugenMorphManager::BeginPlay()
 	}
 	else if (InstancePtr != this)
 	{
-		UE_LOG(LogSumeruMugenMorph, Warning,
+		UE_LOG(LogMugenMorph, Warning,
 			TEXT("AMugenMorphManager: multiple managers in world; keeping first instance '%s', ignoring '%s'"),
 			*GetNameSafe(InstancePtr),
 			*GetNameSafe(this));
 	}
 
-	if (USumeruMugenMorphSubsystem* Subsystem = USumeruMugenMorphSubsystem::Get(this))
+	if (UMugenMorphSubsystem* Subsystem = UMugenMorphSubsystem::Get(this))
 	{
 		Subsystem->SetManager(this);
 	}
@@ -89,7 +89,7 @@ void AMugenMorphManager::EndPlay(const EEndPlayReason::Type EndPlayReason)
 		InstancePtr = nullptr;
 	}
 
-	if (USumeruMugenMorphSubsystem* Subsystem = USumeruMugenMorphSubsystem::Get(this))
+	if (UMugenMorphSubsystem* Subsystem = UMugenMorphSubsystem::Get(this))
 	{
 		if (Subsystem->GetManager() == this)
 		{
@@ -369,7 +369,7 @@ void AMugenMorphManager::PlayInternalEmote(const FString& AudioName, const FStri
 		}
 		else
 		{
-			UE_LOG(LogSumeruMugenMorph, Warning, TEXT("PlayInternalEmote: failed to load '%s'"), *EmotePath);
+			UE_LOG(LogMugenMorph, Warning, TEXT("PlayInternalEmote: failed to load '%s'"), *EmotePath);
 		}
 		return;
 	}
@@ -390,7 +390,7 @@ void AMugenMorphManager::PlayInternalEmote(const FString& AudioName, const FStri
 					}
 					if (!bOk)
 					{
-						UE_LOG(LogSumeruMugenMorph, Warning, TEXT("PlayInternalEmote async: failed '%s'"), *EmotePath);
+						UE_LOG(LogMugenMorph, Warning, TEXT("PlayInternalEmote async: failed '%s'"), *EmotePath);
 						return;
 					}
 
@@ -410,7 +410,7 @@ void AMugenMorphManager::PlayAudio(const FString& Name)
 
 void AMugenMorphManager::PlayAudioFile_Implementation(const FString& AbsoluteOrRelativePath)
 {
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("PlayAudioFile: %s (override in BP to play disk wav)"), *AbsoluteOrRelativePath);
+	UE_LOG(LogMugenMorph, Log, TEXT("PlayAudioFile: %s (override in BP to play disk wav)"), *AbsoluteOrRelativePath);
 }
 
 void AMugenMorphManager::StopAudioFile_Implementation()
@@ -431,7 +431,7 @@ void AMugenMorphManager::TrimQueuesLocked()
 		if (Queues.Audio.Dequeue(Dropped))
 		{
 			--Queues.PendingAudioCount;
-			UE_LOG(LogSumeruMugenMorph, Warning, TEXT("MugenMorph audio queue backpressure: dropped oldest chunk (cap=%d)"), Cap);
+			UE_LOG(LogMugenMorph, Warning, TEXT("MugenMorph audio queue backpressure: dropped oldest chunk (cap=%d)"), Cap);
 		}
 		else
 		{
@@ -446,7 +446,7 @@ void AMugenMorphManager::TrimQueuesLocked()
 		if (Queues.Emote.Dequeue(Dropped))
 		{
 			--Queues.PendingEmoteCount;
-			UE_LOG(LogSumeruMugenMorph, Warning, TEXT("MugenMorph emote queue backpressure: dropped oldest chunk (cap=%d)"), Cap);
+			UE_LOG(LogMugenMorph, Warning, TEXT("MugenMorph emote queue backpressure: dropped oldest chunk (cap=%d)"), Cap);
 		}
 		else
 		{
@@ -918,7 +918,7 @@ void AMugenMorphManager::PlayEmoteData(FEmoteData&& EmoteData)
 		}
 		else
 		{
-			UE_LOG(LogSumeruMugenMorph, Warning, TEXT("PlayEmoteData: faceId=%d not registered"), EmoteData.FaceId);
+			UE_LOG(LogMugenMorph, Warning, TEXT("PlayEmoteData: faceId=%d not registered"), EmoteData.FaceId);
 		}
 		return;
 	}

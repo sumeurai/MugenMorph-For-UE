@@ -2,7 +2,7 @@
 
 #include "MugenMorphAudioRecord.h"
 
-#include "SumeruMugenMorphLog.h"
+#include "MugenMorphLog.h"
 #include "Modules/ModuleManager.h"
 
 FMugenMorphAudioRecord::~FMugenMorphAudioRecord()
@@ -22,7 +22,7 @@ bool FMugenMorphAudioRecord::Start(int32 InMaxLengthSeconds)
 	// FAudioCapture binds the WASAPI factory in its constructor. Load the plugin first.
 	if (!FModuleManager::Get().LoadModule(TEXT("AudioCapture")))
 	{
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("MugenMorph record: AudioCapture plugin is not available."));
+		UE_LOG(LogMugenMorph, Error, TEXT("MugenMorph record: AudioCapture plugin is not available."));
 		return false;
 	}
 
@@ -33,7 +33,7 @@ bool FMugenMorphAudioRecord::Start(int32 InMaxLengthSeconds)
 	if (!Capture->GetCaptureDeviceInfo(DeviceInfo, INDEX_NONE))
 	{
 		Capture.Reset();
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("MugenMorph record: no microphone device."));
+		UE_LOG(LogMugenMorph, Error, TEXT("MugenMorph record: no microphone device."));
 		return false;
 	}
 
@@ -72,12 +72,12 @@ bool FMugenMorphAudioRecord::Start(int32 InMaxLengthSeconds)
 		Capture->AbortStream();
 		Capture->CloseStream();
 		Capture.Reset();
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("MugenMorph record: failed to open capture stream."));
+		UE_LOG(LogMugenMorph, Error, TEXT("MugenMorph record: failed to open capture stream."));
 		return false;
 	}
 
 	bRecording = true;
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph record: start (%s, %d Hz, %d ch)"),
+	UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph record: start (%s, %d Hz, %d ch)"),
 		*DeviceInfo.DeviceName, DeviceInfo.PreferredSampleRate, DeviceInfo.InputChannels);
 	return true;
 }
@@ -115,14 +115,14 @@ bool FMugenMorphAudioRecord::Stop(TArray<uint8>& OutWavBytes)
 
 	if (Mono.Num() <= 0)
 	{
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("MugenMorph record: capture was empty."));
+		UE_LOG(LogMugenMorph, Error, TEXT("MugenMorph record: capture was empty."));
 		return false;
 	}
 
 	TArray<float> Resampled;
 	ResampleMono(Mono, InRate, TargetSampleRate, Resampled);
 	OutWavBytes = EncodeWavPcm16Mono(Resampled, TargetSampleRate);
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph record: stop (%d samples @ %d Hz -> %d wav bytes)"),
+	UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph record: stop (%d samples @ %d Hz -> %d wav bytes)"),
 		Mono.Num(), InRate, OutWavBytes.Num());
 	return OutWavBytes.Num() > 44;
 }
@@ -176,7 +176,7 @@ void FMugenMorphAudioRecord::OnCapture(
 
 	if (bOverflow)
 	{
-		UE_LOG(LogSumeruMugenMorph, Verbose, TEXT("MugenMorph record: capture overflow"));
+		UE_LOG(LogMugenMorph, Verbose, TEXT("MugenMorph record: capture overflow"));
 	}
 }
 

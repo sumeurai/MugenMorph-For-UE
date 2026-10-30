@@ -17,11 +17,11 @@ Setup
    https://mugen3d.ai/ Developers
    Defaults: BaseUrl=https://api.mugen3d.ai/
              LoginPath=v1/access/auth
-             MugenMorphMeshPath=v1/audio-to-face/offline-mesh
+             MugenMorphMeshPath=v1/mugen-morph/offline-mesh
    Or create a Data Asset: Miscellaneous -> Data Asset -> MugenMorph API Settings
    (client override > data asset > project settings).
 3. Place AMugenMorphManager (or a Blueprint subclass) in the level if you need
-   Blueprint events. Otherwise USumeruMugenMorphSubsystem::EnsureManager() spawns one.
+   Blueprint events. Otherwise UMugenMorphSubsystem::EnsureManager() spawns one.
 4. Import your MetaHuman or ARKit face (not included in this plugin).
    Select it and run Mugen3D -> Setup MugenMorph on Selected Actor.
    Or add UMugenMorphComponent yourself:
@@ -35,7 +35,7 @@ Online API
 Login: POST v1/access/auth  {accessKey, secretKey}
        Header Authorization is the raw accessToken (no Bearer prefix).
 
-MugenMorph (default): POST v1/audio-to-face/offline-mesh
+MugenMorph (default): POST v1/mugen-morph/offline-mesh
   Accept: application/x-protobuf
   Body: { "traceId", "data": "<wav-base64>" }
   Response: protobuf {code, message, data{fps, num_frames, audio, blendshapes}}

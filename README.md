@@ -43,7 +43,7 @@ Default endpoints:
 | --- | --- |
 | Base URL | `https://api.mugen3d.ai/` |
 | Login | `v1/access/auth` |
-| MugenMorph | `v1/audio-to-face/offline-mesh` |
+| MugenMorph | `v1/mugen-morph/offline-mesh` |
 
 ## Quick start
 
@@ -83,7 +83,7 @@ ApiClient->PlayFromAudio(WavBytes);
 1. **Login** `POST v1/access/auth`  
    Body `{ "accessKey", "secretKey" }` → `accessToken`  
    Later requests: `Authorization: <token>` (no `Bearer` prefix).
-2. **MugenMorph** `POST v1/audio-to-face/offline-mesh`  
+2. **MugenMorph** `POST v1/mugen-morph/offline-mesh`  
    Headers: `Authorization`, `Accept: application/x-protobuf`  
    Body `{ "traceId", "data": "<wav-base64>" }`
 

@@ -32,7 +32,7 @@ private:
 public:
 	AMugenMorphManager();
 
-	/** Prefer USumeruMugenMorphSubsystem::EnsureManager() in new code. */
+	/** Prefer UMugenMorphSubsystem::EnsureManager() in new code. */
 	static AMugenMorphManager* Instance();
 
 	/** Resolve via WorldSubsystem (spawns if needed). */

@@ -5,4 +5,4 @@
 #include "CoreMinimal.h"
 #include "Logging/LogMacros.h"
 
-DECLARE_LOG_CATEGORY_EXTERN(LogSumeruMugenMorph, Log, All);
+DECLARE_LOG_CATEGORY_EXTERN(LogMugenMorph, Log, All);

@@ -5,14 +5,14 @@
 #include "CoreMinimal.h"
 #include "Animation/AnimNodeBase.h"
 #include "MugenMorphComponent.h"
-#include "AnimNode_SumeruMugenMorphFaceSync.generated.h"
+#include "AnimNode_MugenMorphFaceSync.generated.h"
 
 /**
  * Convai-style face node: evaluate source pose, then write ARKit + MetaHuman
  * CTRL_expressions_* curves so RigLogic in the Face AnimBP can drive the mouth.
  */
 USTRUCT(BlueprintInternalUseOnly)
-struct MUGEN3DMUGENMORPH_API FAnimNode_SumeruMugenMorphFaceSync : public FAnimNode_Base
+struct MUGEN3DMUGENMORPH_API FAnimNode_MugenMorphFaceSync : public FAnimNode_Base
 {
 	GENERATED_BODY()
 
@@ -23,7 +23,7 @@ struct MUGEN3DMUGENMORPH_API FAnimNode_SumeruMugenMorphFaceSync : public FAnimNo
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MugenMorph", meta = (PinHiddenByDefault))
 	TObjectPtr<UMugenMorphComponent> MugenMorphComponent;
 
-	FAnimNode_SumeruMugenMorphFaceSync();
+	FAnimNode_MugenMorphFaceSync();
 
 	virtual void Initialize_AnyThread(const FAnimationInitializeContext& Context) override;
 	virtual void CacheBones_AnyThread(const FAnimationCacheBonesContext& Context) override;

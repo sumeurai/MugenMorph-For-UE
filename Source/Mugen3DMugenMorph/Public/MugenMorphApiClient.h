@@ -17,11 +17,11 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMugenMorphApiRequestFailed, const
 
 /**
  * Unity-compatible MugenMorph client:
- * Login (accessKey/secretKey) -> POST v1/audio-to-face/offline-mesh (protobuf)
+ * Login (accessKey/secretKey) -> POST v1/mugen-morph/offline-mesh (protobuf)
  * with JSON mesh fallback (v1/audio-to-face/mesh).
  * Does not include TalkStream /talk.
  */
-UCLASS(ClassGroup = (MugenMorph), meta = (BlueprintSpawnableComponent, DisplayName = "Sumeru MugenMorph API Client"))
+UCLASS(ClassGroup = (MugenMorph), meta = (BlueprintSpawnableComponent, DisplayName = "Mugen3D MugenMorph API Client"))
 class MUGEN3DMUGENMORPH_API UMugenMorphApiClient : public UActorComponent
 {
 	GENERATED_BODY()

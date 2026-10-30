@@ -30,5 +30,5 @@ private:
 	static void WireSampleActors(UWorld* World, USkeletalMeshComponent* FaceMesh, int32 FaceId);
 	static bool AddInstanceComponent(AActor* Actor, UActorComponent* Component);
 	static bool InsertFaceSyncIntoFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage);
-	static bool AssignSumeruFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage);
+	static bool AssignMugen3DFaceAnimBP(USkeletalMeshComponent* FaceMesh, FString& OutMessage);
 };

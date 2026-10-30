@@ -20,7 +20,7 @@
 #include "Serialization/JsonReader.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
-#include "SumeruMugenMorphProjectSettings.h"
+#include "MugenMorphProjectSettings.h"
 
 namespace
 {
@@ -103,7 +103,7 @@ void FMugen3DMugenMorphInstallStat::TryReport()
 		return;
 	}
 
-	const USumeruMugenMorphProjectSettings* Settings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* Settings = GetDefault<UMugenMorphProjectSettings>();
 	const FString BaseUrl = Settings ? Settings->BaseUrl : FString();
 	if (BaseUrl.IsEmpty())
 	{
@@ -176,7 +176,7 @@ void FMugen3DMugenMorphInstallStat::HandleResponse(FHttpRequestPtr Request, FHtt
 
 FString FMugen3DMugenMorphInstallStat::BuildRequestJson()
 {
-	const USumeruMugenMorphProjectSettings* Settings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* Settings = GetDefault<UMugenMorphProjectSettings>();
 	const FString EngineVersion = FEngineVersion::Current().ToString();
 	const FString MachineId = FPlatformMisc::GetLoginId();
 	const FString AnonId = GetOrCreateAnonId();

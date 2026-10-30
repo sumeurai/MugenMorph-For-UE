@@ -8,9 +8,9 @@
 #include "MugenMorphComponent.h"
 #include "MugenMorph_Type.h"
 #include "Input/Reply.h"
-#include "SumeruMugenMorphLog.h"
-#include "SumeruMugenMorphProjectSettings.h"
-#include "SumeruMugenMorphSubsystem.h"
+#include "MugenMorphLog.h"
+#include "MugenMorphProjectSettings.h"
+#include "MugenMorphSubsystem.h"
 #include "Components/InputComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/GameViewportClient.h"
@@ -69,7 +69,7 @@ void AMugenMorphApiSampleActor::BeginPlay()
 	if (!HasCredentials())
 	{
 		SetStatus(TEXT("No Access Key. Edit -> Project Settings -> Mugen3D -> MugenMorph API"));
-		UE_LOG(LogSumeruMugenMorph, Warning, TEXT("%s"), *StatusMessage);
+		UE_LOG(LogMugenMorph, Warning, TEXT("%s"), *StatusMessage);
 	}
 	else if (bLoginOnBeginPlay && Client)
 	{
@@ -90,7 +90,7 @@ void AMugenMorphApiSampleActor::EndPlay(const EEndPlayReason::Type EndPlayReason
 
 void AMugenMorphApiSampleActor::EnsureRuntime()
 {
-	if (USumeruMugenMorphSubsystem* Subsystem = USumeruMugenMorphSubsystem::Get(this))
+	if (UMugenMorphSubsystem* Subsystem = UMugenMorphSubsystem::Get(this))
 	{
 		Subsystem->EnsureManager();
 	}
@@ -202,7 +202,7 @@ bool AMugenMorphApiSampleActor::HasCredentials() const
 	{
 		return true;
 	}
-	if (const USumeruMugenMorphProjectSettings* ProjectSettings = GetDefault<USumeruMugenMorphProjectSettings>())
+	if (const UMugenMorphProjectSettings* ProjectSettings = GetDefault<UMugenMorphProjectSettings>())
 	{
 		return !ProjectSettings->AccessKey.IsEmpty() && !ProjectSettings->SecretKey.IsEmpty();
 	}
@@ -212,7 +212,7 @@ bool AMugenMorphApiSampleActor::HasCredentials() const
 void AMugenMorphApiSampleActor::SetStatus(const FString& Message)
 {
 	StatusMessage = Message;
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph sample: %s"), *StatusMessage);
+	UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph sample: %s"), *StatusMessage);
 }
 
 void AMugenMorphApiSampleActor::ShowOverlay()

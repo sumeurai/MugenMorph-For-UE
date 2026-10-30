@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/DeveloperSettings.h"
 #include "MugenMorphApiTypes.h"
-#include "SumeruMugenMorphProjectSettings.generated.h"
+#include "MugenMorphProjectSettings.generated.h"
 
 /**
  * Project Settings -> Mugen3D -> MugenMorph API.
@@ -13,7 +13,7 @@
  * Leave keys empty in the shipped plugin.
  */
 UCLASS(Config = Game, DefaultConfig, meta = (DisplayName = "MugenMorph API"))
-class MUGEN3DMUGENMORPH_API USumeruMugenMorphProjectSettings : public UDeveloperSettings
+class MUGEN3DMUGENMORPH_API UMugenMorphProjectSettings : public UDeveloperSettings
 {
 	GENERATED_BODY()
 
@@ -30,9 +30,9 @@ public:
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "MugenMorph|API")
 	FString LoginPath = TEXT("v1/access/auth");
 
-	/** Unity production: v1/audio-to-face/offline-mesh */
+	/** Unity production: v1/mugen-morph/offline-mesh */
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "MugenMorph|API")
-	FString MugenMorphMeshPath = TEXT("v1/audio-to-face/offline-mesh");
+	FString MugenMorphMeshPath = TEXT("v1/mugen-morph/offline-mesh");
 
 	UPROPERTY(Config, EditAnywhere, BlueprintReadOnly, Category = "MugenMorph|API")
 	EMugenMorphApiTransport Transport = EMugenMorphApiTransport::Auto;

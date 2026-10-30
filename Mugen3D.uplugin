@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 7,
-	"VersionName": "0.0.7",
+	"Version": 8,
+	"VersionName": "0.0.8",
 	"FriendlyName": "Mugen3D MugenMorph",
 	"Description": "Audio-to-Face for Unreal Engine. Engine plugin dependencies: LiveLink (optional AnimGraph node) and AudioCapture (sample mic record). Login + offline-mesh protobuf, MetaHuman Face Sync (RigLogic curves). Does not include Avatar or TalkStream.",
 	"Category": "Animation",

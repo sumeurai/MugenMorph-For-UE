@@ -2,7 +2,7 @@
 
 #include "MugenMorphAudioDecoder.h"
 
-#include "SumeruMugenMorphLog.h"
+#include "MugenMorphLog.h"
 
 #define DR_MP3_NO_STDIO
 #define DR_MP3_IMPLEMENTATION
@@ -58,7 +58,7 @@ namespace MugenMorphAudioDecoder
 
 		drmp3_free(Samples, nullptr);
 
-		UE_LOG(LogSumeruMugenMorph, Log,
+		UE_LOG(LogMugenMorph, Log,
 			TEXT("MugenMorphAudioDecoder: MP3 decoded rate=%d ch=%d frames=%llu bytesIn=%d"),
 			OutSampleRate, Channels, static_cast<unsigned long long>(FrameCount), Compressed.Num());
 		return OutPcm16Mono.Num() > 0;

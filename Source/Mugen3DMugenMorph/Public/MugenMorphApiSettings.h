@@ -9,10 +9,10 @@
 
 /**
  * Unity APISettingsConfig equivalent.
- * Create via Add Content -> Miscellaneous -> Data Asset -> Sumeru MugenMorph API Settings.
+ * Create via Add Content -> Miscellaneous -> Data Asset -> Mugen3D MugenMorph API Settings.
  * Leave keys empty in the shipped plugin; fill from https://mugen3d.ai/ Developers.
  */
-UCLASS(BlueprintType, meta = (DisplayName = "Sumeru MugenMorph API Settings"))
+UCLASS(BlueprintType, meta = (DisplayName = "Mugen3D MugenMorph API Settings"))
 class MUGEN3DMUGENMORPH_API UMugenMorphApiSettings : public UDataAsset
 {
 	GENERATED_BODY()
@@ -32,9 +32,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MugenMorph|API")
 	FString LoginPath = TEXT("v1/access/auth");
 
-	/** Relative to BaseUrl. Unity production: v1/audio-to-face/offline-mesh */
+	/** Relative to BaseUrl. Unity production: v1/mugen-morph/offline-mesh */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MugenMorph|API")
-	FString MugenMorphMeshPath = TEXT("v1/audio-to-face/offline-mesh");
+	FString MugenMorphMeshPath = TEXT("v1/mugen-morph/offline-mesh");
 
 	/** Auto infers OfflineProtobuf from a path containing "offline". */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "MugenMorph|API")

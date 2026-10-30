@@ -16,7 +16,7 @@ class FMugenMorphAudioRecord;
  * Sample-only actor (not a public SDK header).
  * Login, overlay UI, PlayFromAudio, mic record. Mirrors Unity MugenMorphSample.
  */
-UCLASS(Blueprintable, meta = (DisplayName = "Sumeru MugenMorph API Sample"))
+UCLASS(Blueprintable, meta = (DisplayName = "Mugen3D MugenMorph API Sample"))
 class MUGEN3DMUGENMORPH_API AMugenMorphApiSampleActor : public AActor
 {
 	GENERATED_BODY()

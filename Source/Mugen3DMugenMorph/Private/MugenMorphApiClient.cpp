@@ -15,8 +15,8 @@
 #include "Policies/CondensedJsonPrintPolicy.h"
 #include "Serialization/JsonSerializer.h"
 #include "Serialization/JsonWriter.h"
-#include "SumeruMugenMorphLog.h"
-#include "SumeruMugenMorphProjectSettings.h"
+#include "MugenMorphLog.h"
+#include "MugenMorphProjectSettings.h"
 
 namespace MugenMorphApiClientPrivate
 {
@@ -350,7 +350,7 @@ bool UMugenMorphApiClient::IgnoreIfBusy()
 	{
 		return false;
 	}
-	UE_LOG(LogSumeruMugenMorph, Warning, TEXT("MugenMorph request ignored: a request is already in flight."));
+	UE_LOG(LogMugenMorph, Warning, TEXT("MugenMorph request ignored: a request is already in flight."));
 	return true;
 }
 
@@ -376,7 +376,7 @@ bool UMugenMorphApiClient::ResolveCredentials(FString& OutAccessKey, FString& Ou
 		OutSecretKey = Settings->SecretKey;
 	}
 
-	const USumeruMugenMorphProjectSettings* ProjectSettings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* ProjectSettings = GetDefault<UMugenMorphProjectSettings>();
 	if (OutAccessKey.IsEmpty() && ProjectSettings)
 	{
 		OutAccessKey = ProjectSettings->AccessKey;
@@ -394,7 +394,7 @@ FString UMugenMorphApiClient::ResolveLoginUrl() const
 	{
 		return Settings->GetLoginUrl();
 	}
-	const USumeruMugenMorphProjectSettings* ProjectSettings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* ProjectSettings = GetDefault<UMugenMorphProjectSettings>();
 	if (ProjectSettings)
 	{
 		return UMugenMorphApiSettings::CombineUrl(ProjectSettings->BaseUrl, ProjectSettings->LoginPath);
@@ -408,12 +408,12 @@ FString UMugenMorphApiClient::ResolveMugenMorphMeshUrl() const
 	{
 		return Settings->GetMugenMorphMeshUrl();
 	}
-	const USumeruMugenMorphProjectSettings* ProjectSettings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* ProjectSettings = GetDefault<UMugenMorphProjectSettings>();
 	if (ProjectSettings)
 	{
 		return UMugenMorphApiSettings::CombineUrl(ProjectSettings->BaseUrl, ProjectSettings->MugenMorphMeshPath);
 	}
-	return UMugenMorphApiSettings::CombineUrl(TEXT("https://api.mugen3d.ai/"), TEXT("v1/audio-to-face/offline-mesh"));
+	return UMugenMorphApiSettings::CombineUrl(TEXT("https://api.mugen3d.ai/"), TEXT("v1/mugen-morph/offline-mesh"));
 }
 
 EMugenMorphApiTransport UMugenMorphApiClient::ResolveTransport() const
@@ -422,12 +422,12 @@ EMugenMorphApiTransport UMugenMorphApiClient::ResolveTransport() const
 	{
 		return Settings->ResolveTransport();
 	}
-	const USumeruMugenMorphProjectSettings* ProjectSettings = GetDefault<USumeruMugenMorphProjectSettings>();
+	const UMugenMorphProjectSettings* ProjectSettings = GetDefault<UMugenMorphProjectSettings>();
 	if (ProjectSettings && ProjectSettings->Transport != EMugenMorphApiTransport::Auto)
 	{
 		return ProjectSettings->Transport;
 	}
-	const FString Path = ProjectSettings ? ProjectSettings->MugenMorphMeshPath : TEXT("v1/audio-to-face/offline-mesh");
+	const FString Path = ProjectSettings ? ProjectSettings->MugenMorphMeshPath : TEXT("v1/mugen-morph/offline-mesh");
 	return Path.Contains(TEXT("offline"), ESearchCase::IgnoreCase)
 		? EMugenMorphApiTransport::OfflineProtobuf
 		: EMugenMorphApiTransport::MeshJson;
@@ -472,7 +472,7 @@ bool UMugenMorphApiClient::StartPost(const FString& Url, const FString& JsonBody
 	Request->OnProcessRequestComplete().BindUObject(this, &UMugenMorphApiClient::HandleHttpComplete);
 	ActiveRequest = Request;
 
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph API POST %s acceptProtobuf=%d (%d chars)"),
+	UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph API POST %s acceptProtobuf=%d (%d chars)"),
 		*Url, bAcceptProtobuf ? 1 : 0, JsonBody.Len());
 	if (!Request->ProcessRequest())
 	{
@@ -539,7 +539,7 @@ bool UMugenMorphApiClient::LoginInternal(bool bThenMugenMorph)
 	FString Key, Secret;
 	if (!ResolveCredentials(Key, Secret))
 	{
-		Fail(TEXT("AccessKey/SecretKey empty. Fill Project Settings → Mugen3D → MugenMorph API, a Sumeru MugenMorph API Settings asset, or client overrides."));
+		Fail(TEXT("AccessKey/SecretKey empty. Fill Project Settings → Mugen3D → MugenMorph API, a Mugen3D MugenMorph API Settings asset, or client overrides."));
 		return false;
 	}
 
@@ -721,7 +721,7 @@ void UMugenMorphApiClient::HandleLoginComplete(const FString& Body)
 		return;
 	}
 
-	UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph API login ok (expiresIn=%d)"), Rep.Data.ExpiresIn);
+	UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph API login ok (expiresIn=%d)"), Rep.Data.ExpiresIn);
 	OnLoginSucceeded.Broadcast(AccessToken);
 
 	if (bPostMugenMorphAfterLogin && !PendingMugenMorphJson.IsEmpty())
@@ -775,7 +775,7 @@ void UMugenMorphApiClient::HandleMugenMorphComplete(const TArray<uint8>& BodyByt
 	else
 	{
 		const FMugenMorphProtobufResult Pb = FMugenMorphProtobufParser::Parse(BodyBytes);
-		UE_LOG(LogSumeruMugenMorph, Log,
+		UE_LOG(LogMugenMorph, Log,
 			TEXT("MugenMorph protobuf code=%d fps=%f frames=%d audio=%d blendshapes=%d"),
 			Pb.Code, Pb.Fps, Pb.NumFrames, Pb.Audio.Num(), Pb.Blendshapes.Num());
 		if (!Pb.IsSuccess())
@@ -807,7 +807,7 @@ void UMugenMorphApiClient::Fail(const FString& Error)
 {
 	bBusy = false;
 	PendingKind = EPendingKind::None;
-	UE_LOG(LogSumeruMugenMorph, Error, TEXT("MugenMorph API: %s"), *Error);
+	UE_LOG(LogMugenMorph, Error, TEXT("MugenMorph API: %s"), *Error);
 	OnRequestFailed.Broadcast(Error);
 }
 
@@ -858,7 +858,7 @@ bool UMugenMorphApiClient::DecodeEmoteBytes(const TArray<uint8>& BlendshapeBytes
 		}
 		else
 		{
-			UE_LOG(LogSumeruMugenMorph, Error, TEXT("DecodeEmoteBytes: float count %d is not a multiple of 61/52/51"), FloatCount);
+			UE_LOG(LogMugenMorph, Error, TEXT("DecodeEmoteBytes: float count %d is not a multiple of 61/52/51"), FloatCount);
 			return false;
 		}
 	}
@@ -914,13 +914,13 @@ bool UMugenMorphApiClient::DecodeAudioBytes(const TArray<uint8>& AudioBytes, TAr
 		{
 			return true;
 		}
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("DecodeAudioBytes: MP3 header detected but decode failed (bytes=%d)."), AudioBytes.Num());
+		UE_LOG(LogMugenMorph, Error, TEXT("DecodeAudioBytes: MP3 header detected but decode failed (bytes=%d)."), AudioBytes.Num());
 		return false;
 	}
 
 	if (MugenMorphAudioDecoder::DecodeMp3ToMonoInt16(AudioBytes, OutPcm16Mono, OutSampleRate))
 	{
-		UE_LOG(LogSumeruMugenMorph, Log, TEXT("DecodeAudioBytes: decoded MP3 without standard magic (bytes=%d rate=%d)."), AudioBytes.Num(), OutSampleRate);
+		UE_LOG(LogMugenMorph, Log, TEXT("DecodeAudioBytes: decoded MP3 without standard magic (bytes=%d rate=%d)."), AudioBytes.Num(), OutSampleRate);
 		return true;
 	}
 
@@ -954,7 +954,7 @@ bool UMugenMorphApiClient::ApplyRawAtfToManager(
 	AMugenMorphManager* Manager = AMugenMorphManager::GetOrCreate(WorldContextObject);
 	if (!Manager)
 	{
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("ApplyRawAtfToManager: AMugenMorphManager missing."));
+		UE_LOG(LogMugenMorph, Error, TEXT("ApplyRawAtfToManager: AMugenMorphManager missing."));
 		return false;
 	}
 
@@ -970,7 +970,7 @@ bool UMugenMorphApiClient::ApplyRawAtfToManager(
 	bool bHaveAudio = DecodeAudioBytes(AudioBytes, Pcm, SampleRate);
 	if (!bHaveAudio && FallbackWavBytes.Num() > 0)
 	{
-		UE_LOG(LogSumeruMugenMorph, Log, TEXT("MugenMorph response has no audio, playing local wav %d bytes"), FallbackWavBytes.Num());
+		UE_LOG(LogMugenMorph, Log, TEXT("MugenMorph response has no audio, playing local wav %d bytes"), FallbackWavBytes.Num());
 		bHaveAudio = DecodeAudioBytes(FallbackWavBytes, Pcm, SampleRate);
 	}
 

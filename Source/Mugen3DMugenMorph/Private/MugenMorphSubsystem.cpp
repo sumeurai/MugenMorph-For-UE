@@ -1,27 +1,27 @@
 // Copyright 2026 Mugen3D. All Rights Reserved.
 
-#include "SumeruMugenMorphSubsystem.h"
+#include "MugenMorphSubsystem.h"
 #include "MugenMorph.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "SumeruMugenMorphLog.h"
+#include "MugenMorphLog.h"
 
-USumeruMugenMorphSubsystem* USumeruMugenMorphSubsystem::GetMugenMorphSubsystem(const UObject* WorldContextObject)
+UMugenMorphSubsystem* UMugenMorphSubsystem::GetMugenMorphSubsystem(const UObject* WorldContextObject)
 {
 	return Get(WorldContextObject);
 }
 
-USumeruMugenMorphSubsystem* USumeruMugenMorphSubsystem::Get(const UObject* WorldContextObject)
+UMugenMorphSubsystem* UMugenMorphSubsystem::Get(const UObject* WorldContextObject)
 {
 	if (!WorldContextObject)
 	{
 		return nullptr;
 	}
 	UWorld* World = WorldContextObject->GetWorld();
-	return World ? World->GetSubsystem<USumeruMugenMorphSubsystem>() : nullptr;
+	return World ? World->GetSubsystem<UMugenMorphSubsystem>() : nullptr;
 }
 
-AMugenMorphManager* USumeruMugenMorphSubsystem::GetManager() const
+AMugenMorphManager* UMugenMorphSubsystem::GetManager() const
 {
 	if (AMugenMorphManager* Manager = CachedManager.Get())
 	{
@@ -46,7 +46,7 @@ AMugenMorphManager* USumeruMugenMorphSubsystem::GetManager() const
 	return nullptr;
 }
 
-AMugenMorphManager* USumeruMugenMorphSubsystem::EnsureManager()
+AMugenMorphManager* UMugenMorphSubsystem::EnsureManager()
 {
 	if (AMugenMorphManager* Existing = GetManager())
 	{
@@ -56,7 +56,7 @@ AMugenMorphManager* USumeruMugenMorphSubsystem::EnsureManager()
 	UWorld* World = GetWorld();
 	if (!World)
 	{
-		UE_LOG(LogSumeruMugenMorph, Warning, TEXT("EnsureManager: world is null"));
+		UE_LOG(LogMugenMorph, Warning, TEXT("EnsureManager: world is null"));
 		return nullptr;
 	}
 
@@ -67,7 +67,7 @@ AMugenMorphManager* USumeruMugenMorphSubsystem::EnsureManager()
 		|| World->HasBegunPlay();
 	if (!bCanSpawn)
 	{
-		UE_LOG(LogSumeruMugenMorph, Warning,
+		UE_LOG(LogMugenMorph, Warning,
 			TEXT("EnsureManager: world type=%d not ready to spawn manager"),
 			static_cast<int32>(World->WorldType));
 		return nullptr;
@@ -85,23 +85,23 @@ AMugenMorphManager* USumeruMugenMorphSubsystem::EnsureManager()
 
 	if (!Spawned)
 	{
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("EnsureManager: SpawnActor<AMugenMorphManager> failed"));
+		UE_LOG(LogMugenMorph, Error, TEXT("EnsureManager: SpawnActor<AMugenMorphManager> failed"));
 		return nullptr;
 	}
 
 	CachedManager = Spawned;
-	UE_LOG(LogSumeruMugenMorph, Log,
+	UE_LOG(LogMugenMorph, Log,
 		TEXT("EnsureManager: spawned '%s' (optional: place MugenMorphManager_BP in level)"),
 		*Spawned->GetName());
 	return Spawned;
 }
 
-void USumeruMugenMorphSubsystem::SetManager(AMugenMorphManager* InManager)
+void UMugenMorphSubsystem::SetManager(AMugenMorphManager* InManager)
 {
 	CachedManager = InManager;
 }
 
-void USumeruMugenMorphSubsystem::Deinitialize()
+void UMugenMorphSubsystem::Deinitialize()
 {
 	CachedManager.Reset();
 	Super::Deinitialize();

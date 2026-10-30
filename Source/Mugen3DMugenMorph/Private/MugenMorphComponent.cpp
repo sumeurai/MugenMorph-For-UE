@@ -3,8 +3,8 @@
 #include "MugenMorphComponent.h"
 #include "MugenMorphApiSampleActor.h"
 #include "MugenMorph.h"
-#include "SumeruMugenMorphLog.h"
-#include "SumeruMugenMorphSubsystem.h"
+#include "MugenMorphLog.h"
+#include "MugenMorphSubsystem.h"
 #include "Mugen3DLog.h"
 #include "Animation/AnimInstance.h"
 #include "Animation/MorphTarget.h"
@@ -96,7 +96,7 @@ FName UMugenMorphComponent::ARKitEnumToString(int32 Index)
 
 AMugenMorphManager* UMugenMorphComponent::ResolveManager() const
 {
-	if (USumeruMugenMorphSubsystem* Subsystem = USumeruMugenMorphSubsystem::Get(this))
+	if (UMugenMorphSubsystem* Subsystem = UMugenMorphSubsystem::Get(this))
 	{
 		if (AMugenMorphManager* Manager = Subsystem->EnsureManager())
 		{
@@ -240,7 +240,7 @@ void UMugenMorphComponent::BeginPlay()
 		}
 		else
 		{
-			UE_LOG(LogSumeruMugenMorph, Warning,
+			UE_LOG(LogMugenMorph, Warning,
 				TEXT("UMugenMorphComponent::BeginPlay: no face mesh on '%s'. Assign FaceCom or use Mugen3D -> Setup MugenMorph."),
 				*GetNameSafe(GetOwner()));
 		}
@@ -801,7 +801,7 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 {
 	if (!Com)
 	{
-		UE_LOG(LogSumeruMugenMorph, Error, TEXT("UMugenMorphComponent::Init: Face mesh is null"));
+		UE_LOG(LogMugenMorph, Error, TEXT("UMugenMorphComponent::Init: Face mesh is null"));
 		return;
 	}
 
@@ -864,7 +864,7 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 			}
 		}
 
-		UE_LOG(LogSumeruMugenMorph, Log,
+		UE_LOG(LogMugenMorph, Log,
 			TEXT("UMugenMorphComponent::Init: mesh='%s' morphTargets=%d arkitMapped=%d ctrlAliasHits=%d replaceAnim=%d"),
 			*FaceCom->GetName(),
 			MorphCount,
@@ -874,13 +874,13 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 
 		if (MorphCount == 0)
 		{
-			UE_LOG(LogSumeruMugenMorph, Error,
+			UE_LOG(LogMugenMorph, Error,
 				TEXT("UMugenMorphComponent::Init: mesh '%s' has 0 morph targets. Official MetaHuman faces are RigLogic/CTRL driven; SetMorphTarget will not move the mouth unless the Face mesh has ARKit (or CTRL) morphs."),
 				*FaceCom->GetName());
 		}
 		else if (ARKitMappingDic.Num() == 0)
 		{
-			UE_LOG(LogSumeruMugenMorph, Warning,
+			UE_LOG(LogMugenMorph, Warning,
 				TEXT("UMugenMorphComponent::Init: no ARKit/CTRL morph name matches on '%s'. Mouth will stay still. Check Output Log and the Face mesh morph list."),
 				*FaceCom->GetName());
 		}
@@ -894,7 +894,7 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 		{
 			if (AnimClass)
 			{
-				UE_LOG(LogSumeruMugenMorph, Warning,
+				UE_LOG(LogMugenMorph, Warning,
 					TEXT("UMugenMorphComponent::Init: AnimClass '%s' is not MugenMorphAnim, fallback to C++ class"),
 					*AnimClass->GetName());
 			}
@@ -910,7 +910,7 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 		MugenMorphAnim = Cast<UMugenMorphAnim>(FaceCom->GetAnimInstance());
 		if (!MugenMorphAnim)
 		{
-			UE_LOG(LogSumeruMugenMorph, Error,
+			UE_LOG(LogMugenMorph, Error,
 				TEXT("UMugenMorphComponent::Init: failed to create UMugenMorphAnim on mesh '%s'"),
 				*FaceCom->GetName());
 			return;
@@ -926,7 +926,7 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 		}
 		else
 		{
-			UE_LOG(LogSumeruMugenMorph, Warning,
+			UE_LOG(LogMugenMorph, Warning,
 				TEXT("UMugenMorphComponent::Init: keeping AnimBP on '%s' (morph-only path)."),
 				*FaceCom->GetName());
 		}
@@ -938,10 +938,10 @@ void UMugenMorphComponent::Init(int32 FaceId, MotionType InMotionType, USkeletal
 	}
 	else
 	{
-		UE_LOG(LogSumeruMugenMorph, Error,
+		UE_LOG(LogMugenMorph, Error,
 			TEXT("UMugenMorphComponent::Init: AMugenMorphManager missing (world=%s subsystem=%s). Place MugenMorphManager_BP in level or wait until PIE has begun."),
 			*GetNameSafe(GetWorld()),
-			USumeruMugenMorphSubsystem::Get(this) ? TEXT("ok") : TEXT("null"));
+			UMugenMorphSubsystem::Get(this) ? TEXT("ok") : TEXT("null"));
 	}
 }
 
